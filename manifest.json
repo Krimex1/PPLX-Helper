@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "PPLX Helper",
+  "version": "1.0",
+  "description": "Кнопка улучшения промпта для Perplexity и подсчёт токенов ответов.",
+  "icons": {
+    "128": "icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "commands"
+  ],
+  "host_permissions": [
+    "https://www.perplexity.ai/*",
+    "https://openrouter.ai/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "PPLX Helper",
+    "default_icon": {
+      "128": "icon128.png"
+    }
+  },
+  "commands": {
+    "pplx_focus_or_open": {
+      "suggested_key": {
+        "default": "Alt+Q",
+        "mac": "Alt+Q"
+      },
+      "description": "Открыть Perplexity и сфокусировать поле ввода"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.perplexity.ai/*"],
+      "js": ["content.js"],
+      "all_frames": true
+    }
+  ]
+}

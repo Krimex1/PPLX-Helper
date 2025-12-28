@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { width: 300px; padding: 15px; font-family: sans-serif; background: #1a1a1b; color: #eee; }
+    h2 { margin-top: 0; color: #20b2aa; }
+    .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .label { color: #aaa; }
+    hr { border: 0; border-top: 1px solid #333; margin: 15px 0; }
+    input, select { width: 100%; background: #2b2b2b; border: 1px solid #444; color: #fff; padding: 6px; border-radius: 4px; margin-top: 4px; }
+    button { width: 100%; background: #20b2aa; color: #fff; border: none; padding: 10px; border-radius: 6px; cursor: pointer; margin-top: 15px; font-weight: bold; }
+    button:hover { background: #1a9a93; }
+  </style>
+</head>
+<body>
+  <h2>PPLX Helper</h2>
+  <div class="stat-row">
+    <span class="label">Токенов сессии:</span>
+    <span id="sessionTokens">0</span>
+  </div>
+  <div class="stat-row">
+    <span class="label">Ответов:</span>
+    <span id="answersCount">0</span>
+  </div>
+  <hr>
+  <label>OpenRouter API Key:</label>
+  <input type="password" id="openrouterApiKey">
+  <label>Модель:</label>
+  <input type="text" id="openrouterModel" placeholder="deepseek/deepseek-r1:free">
+  <button id="saveBtn">Сохранить</button>
+  <p id="status" style="font-size: 12px; text-align: center; margin-top: 8px;"></p>
+  <script src="popup.js"></script>
+</body>
+</html>
