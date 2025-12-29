@@ -1,35 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <title>PPLX Helper</title>
   <style>
-    body { width: 300px; padding: 15px; font-family: sans-serif; background: #1a1a1b; color: #eee; }
-    h2 { margin-top: 0; color: #20b2aa; }
-    .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
-    .label { color: #aaa; }
-    hr { border: 0; border-top: 1px solid #333; margin: 15px 0; }
-    input, select { width: 100%; background: #2b2b2b; border: 1px solid #444; color: #fff; padding: 6px; border-radius: 4px; margin-top: 4px; }
-    button { width: 100%; background: #20b2aa; color: #fff; border: none; padding: 10px; border-radius: 6px; cursor: pointer; margin-top: 15px; font-weight: bold; }
-    button:hover { background: #1a9a93; }
+    :root {
+      --bg: #05060a; --bg-elevated: #0d0f16; --border-subtle: #1c2030;
+      --accent: #20b2aa; --accent-soft: rgba(32, 178, 170, 0.12);
+      --text-primary: #f5f7ff; --text-secondary: #9ba3c1; --text-muted: #6b7280;
+      --danger: #f97373; --radius-lg: 10px; --radius-md: 6px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.6);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 10px 10px 12px; font-family: system-ui, -apple-system, BlinkMacSystemFont, SF Pro Text, Segoe UI, sans-serif;
+           background: radial-gradient(circle at 0% 0%, #111827 0%, #020617 45%); color: var(--text-primary); min-width: 320px; }
+    .card { background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(3, 7, 18, 0.98)); border-radius: 14px; padding: 12px 12px 10px;
+            box-shadow: var(--shadow-soft); border: 1px solid rgba(148, 163, 184, 0.16); }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .title { font-weight: 600; letter-spacing: 0.03em; font-size: 13px; text-transform: uppercase; color: var(--text-secondary); }
+    .badge { padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 11px; font-weight: 500; }
+    .section { padding: 8px 9px; border-radius: var(--radius-lg); background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-subtle); margin-bottom: 8px; }
+    .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+    .stat { padding: 5px 6px; border-radius: var(--radius-md); background: radial-gradient(circle at 0% 0%, rgba(32, 178, 170, 0.16), rgba(15, 23, 42, 0.6));
+            border: 1px solid rgba(148, 163, 184, 0.25); }
+    .stat-label { font-size: 10px; color: var(--text-muted); }
+    .stat-value { font-size: 13px; font-weight: 600; margin-top: 1px; }
+    .buttons-row { display: flex; gap: 6px; margin-top: 8px; }
+    button { border-radius: var(--radius-md); border: 1px solid rgba(148, 163, 184, 0.3); background: radial-gradient(circle at 0% 0%, rgba(32, 178, 170, 0.28), rgba(15, 23, 42, 0.9));
+             color: var(--text-primary); font-size: 11px; padding: 5px 10px; cursor: pointer; font-weight: 500; display: inline-flex; align-items: center; justify-content: center;
+             transition: background 120ms ease, border-color 120ms ease, transform 80ms ease, box-shadow 80ms ease; }
+    button.secondary { background: rgba(15, 23, 42, 0.9); }
+    button:disabled { opacity: 0.5; cursor: default; }
+    button:not(:disabled):hover { background: radial-gradient(circle at 0% 0%, rgba(45, 212, 191, 0.42), rgba(15, 23, 42, 0.95)); border-color: rgba(94, 234, 212, 0.9);
+                                  transform: translateY(-0.5px); box-shadow: 0 10px 25px rgba(15, 118, 110, 0.5); }
+    button:not(:disabled):active { transform: translateY(0); box-shadow: none; }
+    label.switch-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; padding: 4px 0; color: var(--text-secondary); }
+    label.switch-row span { flex: 1; margin-right: 6px; }
+    input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; }
+    .field-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; margin-bottom: 3px; }
+    input[type="text"] { width: 100%; border-radius: var(--radius-md); border: 1px solid rgba(55, 65, 81, 0.9); background: #020617; color: var(--text-primary);
+                         padding: 5px 7px; font-size: 12px; outline: none; transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease; }
+    input[type="text"]:focus { border-color: rgba(94, 234, 212, 0.9); box-shadow: 0 0 0 1px rgba(94, 234, 212, 0.5); background: #020617; }
+    .hint { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+    .footer { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    #status { font-size: 11px; color: #4ade80; min-height: 12px; }
   </style>
 </head>
 <body>
-  <h2>PPLX Helper</h2>
-  <div class="stat-row">
-    <span class="label">Токенов сессии:</span>
-    <span id="sessionTokens">0</span>
+  <div class="card">
+    <div class="header">
+      <div class="title">PPLX Helper</div>
+      <div class="badge">Prompt tools</div>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">Статистика</div>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-label">Токенов</div>
+          <div class="stat-value" id="sessionTokens">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Ответов</div>
+          <div class="stat-value" id="answersCount">0</div>
+        </div>
+      </div>
+		<div class="hint">Статистика считается с момента запуска расширения</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Функции</div>
+      <label class="switch-row">
+        <span>Считать токены</span>
+        <input type="checkbox" id="enableSessionCounter" checked>
+      </label>
+      <label class="switch-row">
+        <span>Кнопка «Улучшить промпт»</span>
+        <input type="checkbox" id="enableImprovePrompt" checked>
+      </label>
+    </div>
+
+    <div class="section">
+      <div class="section-title">OpenRouter</div>
+      <div class="field-label">API ключ</div>
+      <input type="text" id="openrouterApiKey">
+      <div class="hint">Ключ хранится локально в chrome.storage.sync.</div>
+      <div class="field-label" style="margin-top: 6px">Модель</div>
+      <input type="text" id="openrouterModel" value="deepseek/deepseek-r1-free">
+    </div>
+
+    <div class="footer">
+      <button id="saveBtn">💾 Сохранить настройки</button>
+      <span id="status"></span>
+    </div>
   </div>
-  <div class="stat-row">
-    <span class="label">Ответов:</span>
-    <span id="answersCount">0</span>
-  </div>
-  <hr>
-  <label>OpenRouter API Key:</label>
-  <input type="password" id="openrouterApiKey">
-  <label>Модель:</label>
-  <input type="text" id="openrouterModel" placeholder="deepseek/deepseek-r1:free">
-  <button id="saveBtn">Сохранить</button>
-  <p id="status" style="font-size: 12px; text-align: center; margin-top: 8px;"></p>
   <script src="popup.js"></script>
 </body>
 </html>

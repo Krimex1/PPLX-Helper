@@ -1,11 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>PPLX Helper — Настройки</title>
+  <meta charset="UTF-8">
+  <title>PPLX Helper — Настройки</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #191a1a;
+      color: #e8e8e8;
+      margin: 0;
+      padding: 16px;
+    }
+    h1 { font-size: 20px; color: #20b2aa; }
+    h2 { font-size: 16px; margin-top: 16px; }
+    label { display: block; margin: 4px 0; }
+    input[type="text"], input[type="number"] {
+      background: #232424;
+      color: #e8e8e8;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 4px 6px;
+    }
+    .model-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background: #20b2aa;
+      color: #fff;
+      font-weight: 600;
+    }
+    button:hover { background: #1a938c; }
+    .small { font-size: 11px; color: #999; }
+  </style>
 </head>
 <body>
-    <h1>Настройки PPLX Helper</h1>
-    <p>Настройки расширения доступны в поп-апе.</p>
+  <h1>PPLX Helper — Настройки</h1>
+
+  <h2>Функции</h2>
+  <label><input type="checkbox" id="enablePromptCounter"> Счётчик токенов промпта</label>
+  <label><input type="checkbox" id="enableAnswerCost"> Стоимость и токены ответа</label>
+  <label><input type="checkbox" id="enableDiff"> Diff с прошлым ответом</label>
+  <label><input type="checkbox" id="enableTimeline"> Мини‑таймлайн ответа</label>
+  <label><input type="checkbox" id="enableSessionCounter"> Суммарный счётчик сессии</label>
+
+  <h2>Токены</h2>
+  <label>
+    Примерное соотношение символов к токену:
+    <input type="number" id="charsPerToken" min="1" max="10" step="0.1">
+    <span class="small">(по умолчанию 4)</span>
+  </label>
+
+  <h2>Цены моделей ($ за 1М токенов)</h2>
+  <div id="modelsContainer"></div>
+  <button id="addModelBtn" type="button">Добавить модель</button>
+
+  <br>
+  <button id="saveBtn" type="button">Сохранить</button>
+  <span id="status" class="small"></span>
+
+  <script src="options.js"></script>
 </body>
 </html>
